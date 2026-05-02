@@ -1,0 +1,80 @@
+niches:
+  cooking:
+    description_template: "Amazing {topic} recipe you need to try! 🍳"
+    hashtags:
+      - "#cooking"
+      - "#recipe"
+      - "#foodtok"
+      - "#easyrecipe"
+    privacy_level: "PUBLIC_TO_EVERYONE"
+    disable_duet: false
+    disable_comment: false
+    disable_stitch: false
+    max_title_length: 150
+    schedule:
+      cron: "0 9,18 * * *"   # 9am and 6pm every day
+      timezone: "America/New_York"
+
+  fitness:
+    description_template: "{topic} workout that will change your life 💪"
+    hashtags:
+      - "#fitness"
+      - "#workout"
+      - "#gymtok"
+      - "#fitnesstips"
+    privacy_level: "PUBLIC_TO_EVERYONE"
+    disable_duet: false
+    disable_comment: false
+    disable_stitch: false
+    max_title_length: 150
+    schedule:
+      cron: "0 7,17 * * *"   # 7am and 5pm every day
+      timezone: "America/Los_Angeles"
+
+  finance:
+    description_template: "How to {topic} and grow your wealth 💰"
+    hashtags:
+      - "#personalfinance"
+      - "#investing"
+      - "#moneytips"
+      - "#financetok"
+    privacy_level: "PUBLIC_TO_EVERYONE"
+    disable_duet: false
+    disable_comment: false
+    disable_stitch: false
+    max_title_length: 150
+    schedule:
+      cron: "0 12 * * 1-5"   # noon on weekdays
+      timezone: "America/New_York"
+
+  ai_tech:
+    description_template: "{topic} — AI explained 🤖"
+    hashtags:
+      - "#AI"
+      - "#tech"
+      - "#aitools"
+      - "#technews"
+    privacy_level: "PUBLIC_TO_EVERYONE"
+    disable_duet: false
+    disable_comment: false
+    disable_stitch: false
+    max_title_length: 150
+    schedule:
+      cron: "0 10,20 * * *"   # 10am and 8pm every day
+      timezone: "UTC"
+
+  motivation:
+    description_template: "{topic} 🔥 mindset shift"
+    hashtags:
+      - "#motivation"
+      - "#mindset"
+      - "#success"
+      - "#inspiration"
+    privacy_level: "PUBLIC_TO_EVERYONE"
+    disable_duet: false
+    disable_comment: false
+    disable_stitch: false
+    max_title_length: 150
+    schedule:
+      cron: "0 8 * * *"   # 8am every day
+      timezone: "UTC"
