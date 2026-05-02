@@ -8,6 +8,7 @@ from .stock_footage import StockFootageFetcher
 from .captions import parse_timing_metadata
 from .encoder import assemble_and_encode
 from .pipeline_format_a import compose_format_a
+from .trending_audio import TrendingAudioIndex, select_audio_for_niche
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +38,7 @@ class VideoAssembler:
         pixabay_api_key: Optional[str] = None,
         profiles_dir: Optional[Path] = None,
         cache_dir: Optional[Path] = None,
+        trending_audio_dir: Optional[Path] = None,
     ):
         self.fetcher = StockFootageFetcher(
             pexels_api_key=pexels_api_key,
@@ -44,6 +46,7 @@ class VideoAssembler:
             cache_dir=cache_dir,
         )
         self.profiles_dir = profiles_dir
+        self.trending_audio_dir = Path(trending_audio_dir) if trending_audio_dir else None
 
     def assemble(
         self,
@@ -111,6 +114,21 @@ class VideoAssembler:
         caption_segments = parse_timing_metadata(metadata)
         logger.info("Parsed %d caption segment(s)", len(caption_segments))
 
+        # Trending audio: select mood-matched background music for today
+        bg_audio_path: Optional[str] = None
+        kwargs = {}
+        if self.trending_audio_dir is not None:
+            kwargs["audio_dir"] = self.trending_audio_dir
+        index = TrendingAudioIndex.load(**kwargs)
+        if index is not None:
+            sound = select_audio_for_niche(niche, index)
+            if sound is not None:
+                bg_audio_path = sound.file_path
+                logger.info(
+                    "Selected trending audio: '%s' by %s (mood=%s)",
+                    sound.title, sound.artist, sound.mood,
+                )
+
         # Assemble + encode
         return assemble_and_encode(
             footage_paths=footage_paths,
@@ -120,6 +138,7 @@ class VideoAssembler:
             output_path=output_path,
             target_duration=target_duration,
             tmp_dir=tmp_dir,
+            bg_audio_path=bg_audio_path,
         )
 
     def assemble_format_a(

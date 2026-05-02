@@ -1,0 +1,33 @@
+{
+  "date": "2026-05-02",
+  "sounds": [
+    {
+      "tiktok_id": "7000000000000000001",
+      "title": "Dark Cinematic Build",
+      "artist": "AudioCreator1",
+      "mood": "dramatic",
+      "file_path": "data/trending_audio/files/7000000000000000001.mp3"
+    },
+    {
+      "tiktok_id": "7000000000000000002",
+      "title": "Lofi Study Chill",
+      "artist": "ChillBeats",
+      "mood": "calm",
+      "file_path": "data/trending_audio/files/7000000000000000002.mp3"
+    },
+    {
+      "tiktok_id": "7000000000000000003",
+      "title": "Future Bass Drop",
+      "artist": "TechVibes",
+      "mood": "energetic",
+      "file_path": "data/trending_audio/files/7000000000000000003.mp3"
+    },
+    {
+      "tiktok_id": "7000000000000000004",
+      "title": "Background Ambience",
+      "artist": "AmbientPro",
+      "mood": "neutral",
+      "file_path": "data/trending_audio/files/7000000000000000004.mp3"
+    }
+  ]
+}
