@@ -1,0 +1,20 @@
+niche: tech
+caption:
+  font: Courier-Bold
+  font_size: 56
+  color: "#00FF41"
+  stroke_color: "black"
+  stroke_width: 2
+  position: bottom
+  background: true
+  background_color: "#0a0a0a"
+  background_opacity: 0.8
+video:
+  color_grading: cool
+  b_roll_keywords:
+    - coding computer
+    - artificial intelligence
+    - technology circuit
+    - data center
+    - smartphone app
+    - futuristic interface

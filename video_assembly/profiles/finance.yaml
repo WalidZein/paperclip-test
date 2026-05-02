@@ -1,0 +1,20 @@
+niche: finance
+caption:
+  font: Arial-Bold
+  font_size: 60
+  color: "white"
+  stroke_color: "#003366"
+  stroke_width: 2
+  position: bottom
+  background: true
+  background_color: "#001a33"
+  background_opacity: 0.75
+video:
+  color_grading: cool
+  b_roll_keywords:
+    - stock market
+    - money investing
+    - business office
+    - financial chart
+    - wealth
+    - cryptocurrency

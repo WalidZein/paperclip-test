@@ -1,0 +1,20 @@
+niche: motivation
+caption:
+  font: Arial-Bold
+  font_size: 68
+  color: "white"
+  stroke_color: "black"
+  stroke_width: 3
+  position: center
+  background: true
+  background_color: "black"
+  background_opacity: 0.55
+video:
+  color_grading: vibrant
+  b_roll_keywords:
+    - sunrise
+    - running athlete
+    - mountain peak
+    - success celebration
+    - focus study
+    - determination
