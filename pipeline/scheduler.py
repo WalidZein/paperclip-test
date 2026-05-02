@@ -12,6 +12,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger
 
+from .alerts import SlackAlerter
 from .queue import JobQueue
 from .runner import PipelineRunner
 
@@ -28,6 +29,9 @@ _DAILY_CAP = 6
 class PipelineScheduler:
     """Wraps APScheduler to drain the job queue on a cron schedule."""
 
+    # Fire a Slack alert if this fraction or more of a batch fails.
+    _DEFAULT_ALERT_THRESHOLD = 0.5
+
     def __init__(
         self,
         queue: JobQueue,
@@ -35,11 +39,15 @@ class PipelineScheduler:
         drain_interval_hours: Optional[int] = None,
         daily_cap: int = _DAILY_CAP,
         report_path: Optional[str | Path] = None,
+        slack_webhook_url: Optional[str] = None,
+        batch_alert_threshold: float = _DEFAULT_ALERT_THRESHOLD,
     ) -> None:
         self.queue = queue
         self.runner = runner
         self.daily_cap = daily_cap
         self.report_path = Path(report_path) if report_path else Path("daily_report.txt")
+        self._alerter = SlackAlerter(webhook_url=slack_webhook_url)
+        self._batch_alert_threshold = batch_alert_threshold
         drain_hours = drain_interval_hours or int(
             os.environ.get("PIPELINE_DRAIN_INTERVAL_HOURS", _DEFAULT_DRAIN_HOURS)
         )
@@ -114,7 +122,18 @@ class PipelineScheduler:
 
         results = await asyncio.gather(*[_bounded(j) for j in jobs], return_exceptions=True)
         succeeded = sum(1 for r in results if isinstance(r, str))
+        failed = len(jobs) - succeeded
         logger.info("Drain complete — %d/%d succeeded", succeeded, len(jobs))
+
+        if failed > 0:
+            rate = failed / len(jobs)
+            if rate >= self._batch_alert_threshold:
+                logger.warning(
+                    "Batch failure rate %.0f%% exceeds threshold %.0f%% — sending Slack alert",
+                    rate * 100,
+                    self._batch_alert_threshold * 100,
+                )
+                self._alerter.alert_high_failure_rate(failed, len(jobs))
 
     # ------------------------------------------------------------------
     # Immediate one-shot drain (used by CLI `run-now`)
