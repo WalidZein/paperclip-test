@@ -156,6 +156,57 @@ python -m pipeline <command> \
 
 ---
 
+## Getting a TikTok Access Token
+
+Publishing requires a TikTok Developer App and a user-authorized OAuth2 token.
+
+### 1. Create a TikTok Developer App
+
+1. Go to [developers.tiktok.com](https://developers.tiktok.com) and log in.
+2. Create a new app — set the category to **Content Posting**.
+3. Under **Products**, enable **Content Posting API**.
+4. Add your redirect URI (can be `http://localhost:8000/callback` for local use).
+5. Copy your **Client Key** and **Client Secret** from the app dashboard.
+
+### 2. Run the auth helper
+
+```bash
+python tools/tiktok_auth.py \
+  --client-key YOUR_CLIENT_KEY \
+  --client-secret YOUR_CLIENT_SECRET \
+  --redirect-uri http://localhost:8000/callback
+```
+
+The script will:
+1. Print an authorization URL — open it in your browser and approve the app.
+2. TikTok redirects to your `redirect_uri` with a `?code=` query parameter.
+3. Paste that `code` back into the terminal.
+4. The script exchanges it for tokens and prints the values to add to your `.env`.
+
+```
+TIKTOK_ACCESS_TOKEN=act.xxxxxxxx...
+TIKTOK_REFRESH_TOKEN=rft.xxxxxxxx...
+TIKTOK_OPEN_ID=xxxxxxxx...
+```
+
+### 3. Refresh an expired token
+
+Access tokens expire (typically 24 hours). Use the OAuth2 client directly to refresh:
+
+```python
+from publisher.tiktok_client import TikTokOAuth2Client
+
+client = TikTokOAuth2Client(
+    client_key="YOUR_CLIENT_KEY",
+    client_secret="YOUR_CLIENT_SECRET",
+    redirect_uri="http://localhost:8000/callback",
+)
+token = client.refresh_access_token("YOUR_REFRESH_TOKEN")
+print(token.access_token)
+```
+
+---
+
 ## Publishing to TikTok
 
 ### One-shot publish a video
